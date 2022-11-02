@@ -224,13 +224,66 @@ for l in Book.objects.filter(title="1984"):
 - (podemos comprobarlo desde *__urls.py()__*)
 
 ```python
-    lista = "<h2>mi lista de últimos libros</h2>"
+lista = "<h2>mi lista de últimos libros</h2>"
     
-    for libro in Book.objects.all()[274:]:
-       lista += f'<li>{libro.title}</li>' 
-    lista += '</ul>'
+for libro in Book.objects.all()[274:]:
+   lista += f'<li>{libro.title}</li>' 
+lista += '</ul>'
 
-    return HttpResponse(lista)
+return HttpResponse(lista)
+```
+```python
+# Otra manera de hacerlo
+
+lista = "<h2>mi lista de últimos libros</h2>"
+    
+for libro in Book.objects.all().order_by('id')[:5]:
+       lista += f'<li>{libro.title}</li>' 
+lista += '</ul>'
+
+return HttpResponse(lista)
 ```
 
+## Introducir nosotros un libro
 
+### Desde el terminal
+
+```python
+from catalog.models import Author, Book
+
+andres = Author()
+
+andres.first_name = 'Andrés'
+
+andres.last_name = 'Trapiello'
+
+andres.save() # Insert y commit en la DB
+
+# ---
+
+libro = Book()
+
+libro.title = "Don Quijote de la Mancha"
+
+libro.author = andres
+
+libro.isbn = '97884233496782'
+
+# Si el texto ocupa + de una linea se usa ''' '''
+libro.summary = ''' Descripcion '''
+
+libro.save()
+```
+---
+## Sitio administrativo
+
+*__admins.py__*
+```python
+from .models import Book, Author, Genre, Language
+
+# Register your models here.
+admin.site.register(Book)
+admin.site.register(Author)
+admin.site.register(Genre)
+admin.site.register(Language)
+```
