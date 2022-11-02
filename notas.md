@@ -161,4 +161,76 @@ urlpatterns = [
 ]
 ```
 
->makemigrations, migrate
+## Librerias
+
+> pip freeze
+
+> pip freeze > requirements.txt
+
+> pip install -r requirements.txt
+
+## Runserver
+
+> python manage.py runserver
+
+## Shell
+*__ipython para un mejor manejo del shell__*
+
+> python manage.py shell (Abre un entorno de py (con ipython en este caso))
+- Nos permite acceder directamente a la base de datos
+- Hacer consultas directas a la base de datos
+> exit()
+- Salir del editor de texto en la consola de comandos
+
+```python
+from catalog.models import Book
+
+Book.objects.all() # Cuantos objetos tiene de tipo libro
+```
+---
+
+> py manage.py loaddata catalogo
+
+- Cargar datos
+
+```python
+from catalog.models import Book # Nos permite acceder al .json previamente instalado
+
+Book.objects.all().count() # Cuenta los libros en la db
+
+for l in Book.objects.all():
+    print(l)
+
+# P.E => Podemos imprimir solo los 5 primeros libros
+
+for l in Book.objects.all()[:5]:
+    print(l)
+
+history # Comprobar lo introducido hasta el momento
+
+Book.objects.filter(title="1984") # Buscar libro por título
+
+for l in Book.objects.filter(title="1984"):
+    print(l.author) # Método str que tiene el autor
+
+for l in Book.objects.filter(title="1984"):
+    print(f'{l.title}({l.author.last_name})') # Otra manera de print()
+
+```
+
+### Mostrar en inicio los 5 ultimos libros
+
+- views.py es donde se encuentra la ruta de inicio *__index()__*.
+- (podemos comprobarlo desde *__urls.py()__*)
+
+```python
+    lista = "<h2>mi lista de últimos libros</h2>"
+    
+    for libro in Book.objects.all()[274:]:
+       lista += f'<li>{libro.title}</li>' 
+    lista += '</ul>'
+
+    return HttpResponse(lista)
+```
+
+
