@@ -1,24 +1,24 @@
 # Tutorial-django-mozilla
 
 ## Crear un env en python
-
-_Crear un entorno virtual y activarlo_
+---
+*__Crear un entorno virtual y activarlo__*
 > $ python3 -m venv env
 
 > $ source venv/bin/activate
 
-_*En windows*_
+*__En windows__*
 
 > C:\> env\Scripts\activate.bat
 
 ## Crear proyecto libreria local y configurarlo
-
+---
 
 1. mkdir libreria local
 
 2. pip install django
 
-* _- activar el (activate .bat (diferente en windows y linux))_
+    - activar el (activate .bat (diferente en windows y linux))_
 
 3. pip freeze > requirements.txt (redirecciona la colección de librerias)
 
@@ -34,17 +34,19 @@ _*En windows*_
 
 9. py manage.py (activa las migraciones)
 
-- Migracion -> Tienen que adaptar la base de datos a lo que nosotros tenemos en el sistema definido.
+    - Migracion -> Tienen que adaptar la base de datos a lo que nosotros tenemos en el sistema definido.
 
-10. py manage.py createsuperuser (pedira correo y contraseña)
+10. **py manage.py createsuperuser** (pedira correo y contraseña)
 
-11. py manage.py runserver (activa el server, puerto 8000 pordefecto)
+11. **py manage.py runserver** 
+
+    - (activa el server, puerto 8000 pordefecto)
 
 ## Catalog 
-
+---
 > django-admin startproject catalog
 
----
+
 **_settings.py_**
 
 ```python
@@ -162,18 +164,15 @@ urlpatterns = [
 ```
 
 ## Librerias
-
+---
 > pip freeze
 
 > pip freeze > requirements.txt
 
 > pip install -r requirements.txt
 
-## Runserver
-
-> python manage.py runserver
-
 ## Shell
+---
 *__ipython para un mejor manejo del shell__*
 
 > python manage.py shell (Abre un entorno de py (con ipython en este caso))
@@ -245,7 +244,7 @@ return HttpResponse(lista)
 ```
 
 ## Introducir nosotros un libro
-
+---
 ### Desde el terminal
 
 ```python
@@ -286,4 +285,75 @@ admin.site.register(Book)
 admin.site.register(Author)
 admin.site.register(Genre)
 admin.site.register(Language)
+```
+## Comprobar usuarios creados
+---
+
+> py manage.py runserver
+
+1. Abrimos navegador y vamos a localhost:8000/admin
+
+2. Nos conectamos con nuestro super user.
+
+3. En la ventana de usuarios apareceran todos ellos, pueden modificarse desde ahí.
+
+## BookInstance
+---
+Definimos el modelo en admin.py
+```python
+from .models import BookInstance
+
+admin.site.register(BookInstance)
+```
+
+En models.py =>
+
+- Copiamos el contenido de la clase BookInstance e importamos uuid.
+
+Preparamos la migracion =>
+
+> py manage.py makemigrations
+```
+    Migrations for 'catalog':
+        catalog\migrations\0002_bookinstance.py
+            - Create model BookInstance
+```
+Ahora insertaremos datos con el JSon =>
+
+- Añadimos el archivo bookinstances.json en la carpeta fixtures.
+
+> py manage.py migrate
+```
+    Operations to perform:
+        Apply all migrations: admin, auth, catalog, contenttypes, sessions
+    Running migrations:
+        Applying catalog.0002_bookinstance... OK
+```
+
+> py manage.py loaddata bookinstances
+```
+    Installed 707 object(s) from 1 fixture(s)
+```
+
+Consultas con la nueva clase BookInstance =>
+```python
+from catalog.models import Author, Book, BookInstance
+
+# Cuantos libros tenemos en cuyo estado pone 'a'
+BookInstance.objects.filter(status='a').count()
+
+# Otro atributo
+BookInstance.objects.filter(status='o').count()
+```
+
+Vamos a sacar esta informacion por el navegador=>
+
+- Vamos a *__views.py__*.
+
+```python
+lista_disponibles = "<h2>Libros disponibles</h2>"
+count_disponibles = BookInstance.objects.filter(status='a').count()
+lista_disponibles += "<p>Hay " + str(count_disponibles) + " libros  disponibles<p>"
+
+return HttpResponse(texto + lista + lista_disponibles)
 ```

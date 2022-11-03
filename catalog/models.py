@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 
 # https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Models
 # Create your models here.
@@ -57,3 +58,37 @@ class Language(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return self.name
+
+class BookInstance(models.Model):
+    """
+    Modelo que representa una copia específica de un libro (i.e. que puede ser prestado por la biblioteca).
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="ID único para este libro particular en toda la biblioteca")
+    book = models.ForeignKey('Book', on_delete=models.SET_NULL, null=True)
+    imprint = models.CharField(max_length=200)
+    due_back = models.DateField(null=True, blank=True)
+
+    LOAN_STATUS = (
+        ('m', 'Maintenance'),
+        ('o', 'On loan'),
+        ('a', 'Available'),
+        ('r', 'Reserved'),
+    )
+
+    status = models.CharField(
+        max_length=1,
+        choices=LOAN_STATUS,
+        blank=True,
+        default='m',
+        help_text='Disponibilidad del libro'
+    )
+
+    class Meta:
+        ordering = ["due_back"]
+
+
+    def __str__(self):
+        """
+        String para representar el Objeto del Modelo
+        """
+        return '%s (%s)' % (self.id,self.book.title)
