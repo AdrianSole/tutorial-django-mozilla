@@ -357,3 +357,18 @@ lista_disponibles += "<p>Hay " + str(count_disponibles) + " libros  disponibles<
 
 return HttpResponse(texto + lista + lista_disponibles)
 ```
+
+## Estructura urls
+---
+Urls    |   Vista   | Template
+-----------------------------
+/       |  página inicio
+
+/catalog    |  catalogo info
+
+/catalog/libros |  Info general (10 ultim)
+
+/catalog/libros/X  &&   /catalo/autroes/X   |   Detalles
+
+
+
