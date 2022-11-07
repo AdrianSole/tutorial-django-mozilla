@@ -4,20 +4,10 @@ from catalog.models import Book, BookInstance, Author, Genre, Language
 
 # Create your views here.
 def index_general(request):
-    texto = '''<h1>Librería Local</h1>
-    <p>Este es el sitio web de la biblioteca local</p>'''
-    #texto = Página de inicio de la librería local
-    lista = "<h2>mi lista de últimos libros</h2>"
     
-    for libro in Book.objects.all()[274:]:
-       lista += f'<li>{libro.title}</li>' # Otra manera de print()
-    lista += '</ul>'
+    return render(request, 'index-general.html')
 
-    lista_disponibles = "<h2>Libros disponibles</h2>"
-    count_disponibles = BookInstance.objects.filter(status='a').count()
-    lista_disponibles += "<p>Hay " + str(count_disponibles) + " libros disponibles</p>"
 
-    # return HttpResponse(texto + lista + lista_disponibles)
 
 def acerca_de(request):
     texto = '''<h1>Acerca de</h1>
