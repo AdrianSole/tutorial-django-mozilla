@@ -9,15 +9,15 @@
 <p>ISBN: {{ book.isbn }}</p>
 <p>Resumen: {{ book.summary }}</p>
 
-Ejemplares: {{ book.bookinstance_set.all.count }}
+<p>Total ejemplares: {{ book.bookinstance_set.all.count }}</p>
 
 {% for b in book.bookinstance_set.all %}
 {% if  b.status  == 'm' %}
-<p>Estado: Mantenimiento</p>
+<p><strong>Estado:</strong> <em>Mantenimiento</em></p>
 {% elif b.status == 'o' %}
-<p>Estado: Prestado</p>
+<p><strong>Estado:</strong> <em>Prestado</em></p>
 {% elif b.status  == 'a' %}
-<p>Estado: Disponible</p>
+<p><strong>Estado:</strong> <em>Disponible</em></p>
 {% endif %}
 {% endfor %}
 
