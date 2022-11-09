@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle de libros {% endblock %}
+
+{% block content %}
+<h1>{{ book.title }}</h1>
+<p>Titulo: {{ book.title }}</p>
+<p>Autor: {{ book.author }}</p>
+<p>ISBN: {{ book.isbn }}</p>
+<p>Resumen: {{ book.summary }}</p>
+
+Ejemplares: {{ book.bookinstance_set.all.count }}
+
+{% for b in book.bookinstance_set.all %}
+{% if  b.status  == 'm' %}
+<p>Estado: Mantenimiento</p>
+{% elif b.status == 'o' %}
+<p>Estado: Prestado</p>
+{% elif b.status  == 'a' %}
+<p>Estado: Disponible</p>
+{% endif %}
+{% endfor %}
+
+
+
+{% endblock %}
