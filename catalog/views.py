@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from catalog.models import Book, BookInstance, Author, Genre, Language
+from django.views.generic import ListView, DetailView
 
 # Create your views here.
 def index_general(request):
@@ -49,3 +50,8 @@ def index(request):
             'ultimos':ultimos,},
     )
 
+# Listas_genéricas
+
+class BookListView(ListView):
+    ''''Vista generica para el listado de libros'''
+    model = Book
