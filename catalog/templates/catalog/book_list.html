@@ -9,7 +9,7 @@
     {% for libro in book_list %}
         <li class="list-group-item"><a href="{% url 'detalle-libro' libro.id %}">{{ libro }}</a></li>
     {% empty %}
-        <li>No hay ningun libro que coincida con <strong>{{ query }}</strong></li>
+        <button type="submit" class="volver" onclick="location.href='../../'">Volver</button>
     {% endfor %}
     </ul>
 
