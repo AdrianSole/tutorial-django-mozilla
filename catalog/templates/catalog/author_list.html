@@ -1,19 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}Listado de libros {% endblock %}
+{% block title %}Listado de Autores {% endblock %}
 
 {% block content %}
-    <h1>Listado de libros</h1>
-    <h2>{{ some_data }}</h2>
+    <h1>Listado de Autores</h1>
+
     <ul class="list-group">
-    {% for libro in book_list %}
-        <li class="list-group-item"><a href="{% url 'detalle-libro' libro.id %}">{{ libro }}</a></li>
-    {% empty %}
-        <li>No hay ningun libro que coincida con <strong>{{ query }}</strong></li>
+    {% for autor in author_list %}
+        <li class="list-group-item"><a href="{% url 'detalle-autor' autor.id %}">{{ autor }}</a></li>
     {% endfor %}
     </ul>
-
-    {% block pagination %}
     {% if is_paginated %}
         <div class="pagination">
             <span class="page-links">
@@ -29,6 +25,5 @@
             </span>
         </div>
     {% endif %}
-  {% endblock %}
 
 {% endblock %}
