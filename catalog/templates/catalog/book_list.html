@@ -1,20 +1,26 @@
 {% extends 'base.html' %}
 
-{% block title %}Listado de libros {% endblock %}
+{% block title %}Listado de libros{% endblock %}
 
 {% block content %}
     <h1>Listado de libros</h1>
-    <h2>{{ some_data }}</h2>
+<h2>{{ ahora }}</h2>
+{% if anterior %}
+<a href="{{ anterior }}">Volver</a>
+{% endif %}
+
     <ul class="list-group">
     {% for libro in book_list %}
-        <li class="list-group-item"><a href="{% url 'detalle-libro' libro.id %}">{{ libro }}</a></li>
-    {% empty %}
-        <button type="submit" class="volver" onclick="location.href='../../'">Volver</button>
-    {% endfor %}
-    </ul>
 
-    {% block pagination %}
+<li class="list-group-item"><a href="{% url 'detalle-libro' libro.id  %}">{{ libro }}</a></li>
+{% empty %}
+<li> No hemos encontrado ningún libro con la búsqueda <strong>{{busqueda}}</strong></li>
+    {% endfor %}
+</ul>
+
+
     {% if is_paginated %}
+    
         <div class="pagination">
             <span class="page-links">
                 {% if page_obj.has_previous %}
@@ -29,6 +35,6 @@
             </span>
         </div>
     {% endif %}
-  {% endblock %}
 
+  
 {% endblock %}
