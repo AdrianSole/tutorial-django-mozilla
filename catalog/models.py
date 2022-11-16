@@ -44,7 +44,7 @@ class Author(models.Model):
     date_of_death = models.DateField('Died', null=True, blank=True)
 
     class Meta:
-        ordering = ['last_name', 'first_name']
+        ordering = ['-id']
 
     def __str__(self):
         """String for representing the Model object."""
