@@ -1,12 +1,12 @@
 ## creamos urls.py en catalog
 
 from django.urls import path
-from .views import index , acerca_de, BookListView, BookDetailView, AuthorListView, AuthorDetailView, \
+from .views import index , contact, BookListView, BookDetailView, AuthorListView, AuthorDetailView, \
      SearchResultsListView, LoanedBooksByUserListView, renovar_libro, AuthorCreate, AuthorUpdate, AuthorDelete \
 
 urlpatterns = [
     path ('', index, name='index'),
-    path('acercade/', acerca_de, name='acercade'),
+    path('acercade/', contact, name='acercade'),
     path('libros/', BookListView.as_view(), name='libros'),
     path('libros/<int:pk>', BookDetailView.as_view(), name='detalle-libro'),
     path('busqueda/', SearchResultsListView.as_view(), name='buscar'),

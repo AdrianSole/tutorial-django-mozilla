@@ -1,10 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from catalog.models import Book, BookInstance, Author
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 import datetime
-from catalog.forms import RenewBookForm, RenewBookModelForm
+from catalog.forms import RenewBookForm, RenewBookModelForm, ContactForm
+from django.core.mail import send_mail, BadHeaderError
 from django.urls import reverse, reverse_lazy
 
 # Create your views here.
@@ -12,13 +13,32 @@ def index_general(request):
     
     return render(request, 'index-general.html')
 
-def acerca_de(request):
-    texto = '''<h1>Acerca de</h1>
-    <p>Esta es la pagina de acerca de de la librerÃ­a local.</p>
-    <img src="https://www.python.org/static/community_logos/python-logo-master-v3-TM.png" alt="Python logo">
+def contact(request):
     
-    '''
-    return HttpResponse(texto)
+	if request.method == 'POST':
+		form = ContactForm(request.POST)
+		if form.is_valid():
+			subject = "Website Inquiry" 
+			body = {
+			'first_name': form.cleaned_data['first_name'], 
+			'last_name': form.cleaned_data['last_name'], 
+			'email': form.cleaned_data['email_address'], 
+			'message':form.cleaned_data['message'], 
+			}
+			message = "\n".join(body.values())
+
+			try:
+				send_mail(subject, message, 'admin@example.com', ['admin@example.com']) 
+			except BadHeaderError:
+				return HttpResponse('Invalid header found.')
+			return redirect ("main:homepage")
+      
+	form = ContactForm()
+    context = {}
+    context['title'] = 'Acerca de'
+    context['coords'] = "41.6447242,-0.9231553"
+
+	return render(request, "acerca_de.html", {'form':form},context)
 
 def index(request):
     """View function for home page of site."""
