@@ -13,32 +13,13 @@ def index_general(request):
     
     return render(request, 'index-general.html')
 
-def contact(request):
-    
-	if request.method == 'POST':
-		form = ContactForm(request.POST)
-		if form.is_valid():
-			subject = "Website Inquiry" 
-			body = {
-			'first_name': form.cleaned_data['first_name'], 
-			'last_name': form.cleaned_data['last_name'], 
-			'email': form.cleaned_data['email_address'], 
-			'message':form.cleaned_data['message'], 
-			}
-			message = "\n".join(body.values())
-
-			try:
-				send_mail(subject, message, 'admin@example.com', ['admin@example.com']) 
-			except BadHeaderError:
-				return HttpResponse('Invalid header found.')
-			return redirect ("main:homepage")
-      
-	form = ContactForm()
+def acerca_de(request):
     context = {}
     context['title'] = 'Acerca de'
-    context['coords'] = "41.6447242,-0.9231553"
+    context['coords'] = '41.656771,-0.8960287' # "41.6447242,-0.9231553"
 
-	return render(request, "acerca_de.html", {'form':form},context)
+    return render(request, 'catalog/acerca_de.html', context)
+
 
 def index(request):
     """View function for home page of site."""
@@ -101,7 +82,9 @@ class SearchResultsListView(ListView):
         # voy a guardar query para el contexto
         if query:
             self.query = query
-            return Book.objects.filter(title__icontains=query)
+            resultado = Book.objects.filter(title__icontains=query)
+            # ampliar búsqueda y concatenar resultados
+            return resultado    
         else:
             return []
     
