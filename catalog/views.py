@@ -17,8 +17,25 @@ def acerca_de(request):
     context = {}
     context['title'] = 'Acerca de'
     context['coords'] = '41.656771,-0.8960287' # "41.6447242,-0.9231553"
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = "Website Inquiry" 
+            body = {
+			'first_name': form.cleaned_data['first_name'], 
+			'last_name': form.cleaned_data['last_name'], 
+			'email': form.cleaned_data['email_address'], 
+			'message':form.cleaned_data['message'], 
+			}
+            message = "\n".join(body.values())
 
-    return render(request, 'catalog/acerca_de.html', context)
+            try:
+                send_mail(subject, message, 'admin@example.com', ['admin@example.com']) 
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.')
+            return redirect ("main:homepage")
+    form = ContactForm()
+    return render(request, "catalog/acerca_de.html", {'form':form})
 
 
 def index(request):
