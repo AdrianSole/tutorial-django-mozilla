@@ -14,9 +14,7 @@ def index_general(request):
     return render(request, 'index-general.html')
 
 def acerca_de(request):
-    context = {}
-    context['title'] = 'Acerca de'
-    context['coords'] = '41.656771,-0.8960287' # "41.6447242,-0.9231553"
+    
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
@@ -34,8 +32,15 @@ def acerca_de(request):
             except BadHeaderError:
                 return HttpResponse('Invalid header found.')
             return redirect ("main:homepage")
+    
     form = ContactForm()
-    return render(request, "catalog/acerca_de.html", {'form':form})
+
+    #FIXME: El context hace que se muestre la página en código HTML
+    context = {}
+    context['title'] = 'Acerca de'
+    context['coords'] = '41.656771,-0.8960287' # "41.6447242,-0.9231553"
+
+    return render(request, "catalog/acerca_de.html", context, {'form':form})
 
 
 def index(request):
@@ -112,6 +117,8 @@ class SearchResultsListView(ListView):
         context['busqueda'] = self.query
         context['anterior'] = self.request.META.get('HTTP_REFERER')
         return context
+
+# TODO: class SearchAuthorResultListView(ListView):
 
 # Libros prestados
 class LoanedBooksByUserListView(ListView):

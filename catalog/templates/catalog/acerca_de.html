@@ -17,20 +17,15 @@
   <div id="map" class="col"></div>
   <div class="col">
     <h3>Formulario de contacto</h3>
-    <!--Contact form-->
-    <div style="margin: 80px">
-      <h1>Contact</h1>
-      <h4>Contact us directly if you have any questions</h4>
-      <p>
-        Please write your name, email address and a message below if you have
-        any questions. One of our staff members will be happy to contact you
-        directly and answer your questions as soon as possible.
-      </p>
-      <form method="post">
-        {% csrf_token %} {{form.as_p}}
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+    <h4>Contacta con nosotros directamente si tienes alguna pregunta</h4>
+    <p>
+      Por favor escribe tu nombre, dirección de correo y un mensaje debajo si
+      tienes alguna pregunta.
+    </p>
+    <form method="post">
+      {% csrf_token %} {{form.as_p}}
+      <button type="submit">Enviar</button>
+    </form>
   </div>
 </div>
 {% endblock %} {% block extrajs %}
@@ -40,7 +35,7 @@
   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
   crossorigin=""
 ></script>
-
+<!--FIXME: Quitar mensaje de error 'Property assignment expected'-->
 <script>
   var mimapa = L.map('map').setView([{{ coords }}], 13);
 
