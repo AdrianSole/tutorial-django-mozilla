@@ -7,6 +7,8 @@ import datetime
 from catalog.forms import RenewBookForm, RenewBookModelForm, ContactForm
 from django.core.mail import send_mail, BadHeaderError
 from django.urls import reverse, reverse_lazy
+from django.utils.translation import gettext_lazy as _
+from django.contrib import messages
 
 # Create your views here.
 def index_general(request):
@@ -26,12 +28,13 @@ def acerca_de(request):
 			'message':form.cleaned_data['message'], 
 			}
             message = "\n".join(body.values())
-
             try:
                 send_mail(subject, message, 'admin@example.com', ['admin@example.com']) 
             except BadHeaderError:
                 return HttpResponse('Invalid header found.')
-            return redirect ("main:homepage")
+            messages.success(request, _('Message sent successfully!'))
+            return HttpResponseRedirect(reverse('index'))
+        messages.error(request, _("Error. Message not sent."))
 
     context = {}
     context['title'] = 'Acerca de'
@@ -187,7 +190,14 @@ class AuthorListView(ListView):
     '''Vista generica para el listado de autores'''
     model = Author
     paginate_by = 15
-
+    def get_queryset(self):
+        return Author.objects.all().order_by('last_name')
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(AuthorListView, self).get_context_data(**kwargs)
+        # Create any data and add it to the context
+        context['ahora'] = datetime.datetime.now()
+        return context
 class AuthorDetailView(DetailView):
     '''Vista generica para el detalle de un autor'''
     model = Author

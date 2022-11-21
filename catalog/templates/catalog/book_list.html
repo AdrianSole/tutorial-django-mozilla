@@ -1,5 +1,8 @@
-{% extends 'base.html' %} {% block title %}Listado de libros{% endblock %} {%
-block content %}
+{% extends 'base.html' %} 
+
+{% block title %}Listado de libros{% endblock %} 
+
+{% block content %}
 <h1>Listado de libros</h1>
 <h2>{{ ahora }}</h2>
 {% if anterior %}
@@ -37,4 +40,5 @@ block content %}
     {% endif %}
   </span>
 </div>
-{% endif %} {% endblock %}
+{% endif %} 
+{% endblock %}
