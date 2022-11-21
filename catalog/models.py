@@ -27,6 +27,16 @@ class Book(models.Model):
         """String for representing the Model object.""" 
         return self.title
 
+    # display genre as a string
+    def display_genre(self):
+        """
+        Creates a string for the Genre. This is required to display genre in Admin.
+        """
+        return ', '.join([ genre.name for genre in self.genre.all()[:3] ])
+    
+    display_genre.short_description = 'Genre'
+
+
 class Genre(models.Model):
     """Model representing a book genre."""
     name = models.CharField(max_length=200, 
@@ -44,7 +54,8 @@ class Author(models.Model):
     date_of_death = models.DateField('Died', null=True, blank=True)
 
     class Meta:
-        ordering = ['-id']
+        ordering = ['last_name', 'first_name']
+        # ordering = ['-id']
 
     def __str__(self):
         """String for representing the Model object."""
