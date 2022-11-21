@@ -32,15 +32,13 @@ def acerca_de(request):
             except BadHeaderError:
                 return HttpResponse('Invalid header found.')
             return redirect ("main:homepage")
-    
-    form = ContactForm()
 
-    #FIXME: El context hace que se muestre la página en código HTML
     context = {}
     context['title'] = 'Acerca de'
     context['coords'] = '41.656771,-0.8960287' # "41.6447242,-0.9231553"
+    context['form'] = ContactForm()
 
-    return render(request, "catalog/acerca_de.html", context, {'form':form})
+    return render(request, "catalog/acerca_de.html", context)
 
 
 def index(request):
@@ -95,7 +93,7 @@ class BookDetailView(DetailView):
     '''Vista generica para el detalle de un libro'''
     model = Book    
 
-## Búsqueda
+## Búsqueda libros
 class SearchResultsListView(ListView):
     model = Book
     
@@ -118,7 +116,28 @@ class SearchResultsListView(ListView):
         context['anterior'] = self.request.META.get('HTTP_REFERER')
         return context
 
-# TODO: class SearchAuthorResultListView(ListView):
+# Búsqueda autores
+class SearchAuthorResultListView(ListView):
+    model = Author
+    
+    def get_queryset(self): # new
+        query = self.request.GET.get('q')
+        # voy a guardar query para el contexto
+        if query:
+            self.query = query
+            resultado = Author.objects.filter(last_name__icontains=query)
+            # ampliar búsqueda y concatenar resultados
+            return resultado    
+        else:
+            return []
+    
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(SearchAuthorResultListView, self).get_context_data(**kwargs)
+        # Create any data and add it to the context
+        context['busqueda'] = self.query
+        context['anterior'] = self.request.META.get('HTTP_REFERER')
+        return context
 
 # Libros prestados
 class LoanedBooksByUserListView(ListView):
