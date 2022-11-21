@@ -1,0 +1,3 @@
+[submodule "bibliotecas"]
+	path = bibliotecas
+	url = git@github.com:DWES-LE/aplicacion-bibliotecas-AdrianSole.git

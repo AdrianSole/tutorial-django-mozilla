@@ -28,4 +28,6 @@ urlpatterns = [
     
     # urls de django-debug-toolbar
     path('__debug__/', include('debug_toolbar.urls')),
+
+    path('bibliotecas/', include('bibliotecas.urls')),
 ]
