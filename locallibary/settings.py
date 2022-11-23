@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'catalog.apps.CatalogConfig', #This object was created for us in /catalog/apps.py
     'debug_toolbar',
     # Nueva aplicación bibliotecas
-    'bibliotecas.apps.BibliotecasConfig'
+    # TODO: Descomentar esto
+    # 'bibliotecas.apps.BibliotecasConfig'
 ]
 
 MIDDLEWARE = [

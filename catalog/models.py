@@ -1,5 +1,8 @@
 from django.db import models
 import uuid
+from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
+from django.utils.html import format_html
 
 # https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Models
 # Create your models here.
@@ -78,6 +81,7 @@ class BookInstance(models.Model):
     book = models.ForeignKey('Book', on_delete=models.SET_NULL, null=True)
     imprint = models.CharField(max_length=200)
     due_back = models.DateField(null=True, blank=True)
+    image = models.ImageField(upload_to='images', null=True, blank=True)
 
     LOAN_STATUS = (
         ('m', 'Maintenance'),
@@ -103,3 +107,20 @@ class BookInstance(models.Model):
         String para representar el Objeto del Modelo
         """
         return '%s (%s)' % (self.id,self.book.title)
+
+    @admin.display(description=_("Image"))
+    def img_image(self):
+        if self.image:
+            return format_html(
+                '<img src="{}" width="80" />'.format(
+                    self.image.url)
+            )
+        else:
+            return 'No foto'
+
+    @admin.display(description=_('Status'))
+    def status_color(self):
+        return format_html(
+            '<span style="color: {}; font-size:18px;">📗</span>',
+            'green' if self.status == 'a' else 'red',
+        )
