@@ -1,3 +1,6 @@
 [submodule "bibliotecas"]
 	path = bibliotecas
 	url = git@github.com:DWES-LE/aplicacion-bibliotecas-AdrianSole.git
+[submodule "mundial"]
+	path = mundial
+	url = git@github.com:AdrianSole/mundial-futbol-app.git
