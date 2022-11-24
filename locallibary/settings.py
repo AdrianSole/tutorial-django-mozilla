@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     # Nueva aplicación bibliotecas
     'bibliotecas.apps.BibliotecasConfig',
+    'django.contrib.admin',
     'mundial.apps.MundialConfig'
 ]
 
