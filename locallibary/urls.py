@@ -18,20 +18,19 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
-#importamos la vista de nuestra app catalog
+# importamos la vista de nuestra app catalog
 from catalog.views import index_general
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # castellanizar url  catálogo
     path('catalogo/', include('catalog.urls')),
-    ## para el index general
+    # para el index general
     path('', index_general, name='index_general'),
-    
+
     # urls de django-debug-toolbar
     path('__debug__/', include('debug_toolbar.urls')),
 
-    # TODO: Desmarcar para tarea bibliotecas
-    #path('bibliotecas/', include('bibliotecas.urls')),
+    path('bibliotecas/', include('bibliotecas.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
